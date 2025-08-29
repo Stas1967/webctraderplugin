@@ -58,7 +58,7 @@ export class CtraderCallback implements OnInit {
       }
     });
   }
-
+// this is only for take in mind
   autorize(): void {
     const tokenacces ="https://openapi.ctrader.com/apps/token?grant_type=authorization_code&code={mycode}&client_id= 16156_TXorNloYylol4020vrnEu8Jg5apkQpXep6jjtyvQTEAd4RrOLt&client_secret=VcVZEj1g4qWt6qJhVaPNMkCeDD1L7fclDIqPGZPVBzShKraOQJ";
   }
