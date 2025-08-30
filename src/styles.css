@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Import a modern, clean font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Define a modern, dark color palette */
+:root {
+  --primary-bg-color: #121212;
+  --secondary-bg-color: #1E1E1E;
+  --primary-text-color: #E0E0E0;
+  --accent-color: #007BFF;
+  --accent-hover-color: #0056b3;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --card-border-color: #333;
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Apply base styles to the entire application */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+}
+
+/* General container styling for consistent padding */
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Basic button styling */
+a.button, button {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: var(--accent-color);
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+a.button:hover, button:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
