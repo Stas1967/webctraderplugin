@@ -11,5 +11,22 @@
     @if(errorMsg) {
     <div style="color: red;">{{ errorMsg }}</div>
     }
+    @if(genInfoMsg) {
+    <div style="color: green;">{{ genInfoMsg }}</div>
+    }
+    <h3>EURUSD Quotes</h3>
+    @if(quote) {
+    <div>
+      <strong>Ask:</strong> {{ quote.ask }}<br>
+      <strong>Bid:</strong> {{ quote.bid }}<br>
+      <strong>High:</strong> {{ quote.high }}<br>
+      <strong>Low:</strong> {{ quote.low }}<br>
+      <strong>Session Close:</strong> {{ quote.sessionClose }}<br>
+      <strong>Timestamp:</strong> {{ quote.timestamp }}<br>
+    </div>
+    }
+    @for (item of logger; track $index) {
+    <p>{{item}}</p>
+    }
   </div>
 </div>
