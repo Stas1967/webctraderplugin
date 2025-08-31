@@ -1,5 +1,15 @@
 <div class="login-container">
-    <h1>Welcome to cTrader Web Plugin</h1>
-    <p>Please connect your cTrader account to continue.</p>
-    <button >Connect to cTrader</button>
+  <h1>Welcome to cTrader</h1>
+  <p>Please connect your cTrader account to continue.</p>
+  <button (click)="refreshWindow()">Connect to cTrader</button>
+  <button (click)="refreshWindow()">Refresh</button>
+  <div class="account-info">
+    <h3>Información de la cuenta</h3>
+    @if(accountInfoMsg) {
+    <div>{{ accountInfoMsg }}</div>
+    }
+    @if(errorMsg) {
+    <div style="color: red;">{{ errorMsg }}</div>
+    }
   </div>
+</div>
