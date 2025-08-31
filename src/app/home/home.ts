@@ -41,19 +41,32 @@ export class Home {
       .pipe(take(1))
       .subscribe();
 
-    // 3. Wait until the host registers the client
     registerEvent(this.adapter)
       .pipe(
         take(1),
         tap(() => {
-          // 4. Second confirmation required by the protocol
           handleConfirmEvent(this.adapter, {})
             .pipe(take(1))
             .subscribe();
-
-          // 5. Fully in-sync. Unlock the UI
           this.setConnected.set(true);
           this.accountInfoMsg = "✅ Connected";
+
+          // Obtener lista de símbolos y buscar EURUSD
+          getLightSymbolList(this.adapter, {})
+            .pipe(take(1))
+            .subscribe({
+              next: (response: any) => {
+                const eurusd = response.symbols?.find((s: any) => s.name === 'EURUSD');
+                if (eurusd) {
+                  this.requestSymbolInfo(eurusd.symbolId);
+                } else {
+                  this.genInfoMsg = 'No se encontró EURUSD en la lista de símbolos.';
+                }
+              },
+              error: () => {
+                this.genInfoMsg = 'Error al obtener la lista de símbolos.';
+              }
+            });
         }),
         catchError(err => {
           this.accountInfoMsg = "❌ Error host connection";
@@ -67,7 +80,6 @@ export class Home {
       .pipe(tap(this.logger))
       .subscribe();
     getAccountInformation(this.adapter, {}).pipe(take(1), tap(this.logger)).subscribe();
-
     // sdkMethod(adapter.current, params)
     //   .pipe(take(1), tap(log), catchError(handleError))
     //   .subscribe();
@@ -94,6 +106,29 @@ export class Home {
   }
   refreshWindow() {
     window.location.reload();
+  }
+
+  // Solicita la información del símbolo usando el symbolId correcto
+  private requestSymbolInfo(symbolId: number) {
+    const clientMsgId = 'symbol-info-123';
+    window.dispatchEvent(new MessageEvent('message-to-host', {
+      data: {
+        payloadType: 2100,
+        payload: {
+          payloadType: 173, // ProtoGetSymbolReq
+          symbolId: [symbolId],
+          clientMsgId: clientMsgId
+        },
+        clientMsgId: clientMsgId
+      }
+    }));
+
+    window.addEventListener('message-from-host', (event: Event) => {
+      const messageEvent = event as MessageEvent;
+      if (messageEvent.data?.payloadType === 2101 && messageEvent.data.clientMsgId === clientMsgId) {
+        this.genInfoMsg = JSON.stringify(messageEvent.data.payload);
+      }
+    });
   }
   private initializeConnection() {
     registerEvent(this.adapter).pipe(take(1)).subscribe({
